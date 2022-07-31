@@ -1,5 +1,27 @@
 ﻿@model IEnumerable<AuctionApplication.Models.ItemModel>
 
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Reset searching" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SearchForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Search for an auction" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
 <p>List of auctions</p>
 
 <table class="table">
@@ -23,23 +45,23 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AuctionId)
-            </td>
-            <td>
-                @Html.ActionLink("Go to the auction", "Offer", routeValues: new { @auctionId = item.AuctionId }, htmlAttributes: new { })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuctionId)
+                </td>
+                <td>
+                    @Html.ActionLink("Go to the auction", "Offer", routeValues: new { @auctionId = item.AuctionId }, htmlAttributes: new { })
+                </td>
+            </tr>
         }
     </tbody>
 </table>

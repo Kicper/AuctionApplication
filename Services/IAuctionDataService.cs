@@ -9,5 +9,7 @@ namespace AuctionApplication.Services
     interface IAuctionDataService
     {
         List<ItemModel> GetAllAvailableAuctions();
+
+        List<ItemModel> SearchAuctions(string searchTerm);
     }
 }

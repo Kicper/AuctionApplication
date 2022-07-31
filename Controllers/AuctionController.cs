@@ -1,4 +1,5 @@
-﻿using AuctionApplication.Services;
+﻿using AuctionApplication.Models;
+using AuctionApplication.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,18 @@ namespace AuctionApplication.Controllers
         {
             AuctionDAO auction = new AuctionDAO();
             return View(auction.GetAllAvailableAuctions());
+        }
+
+        public IActionResult SearchResults(string searchTerm)
+        {
+            AuctionDAO auction = new AuctionDAO();
+            List<ItemModel> foundAuctions = auction.SearchAuctions(searchTerm);
+            return View("Index", foundAuctions);
+        }
+
+        public IActionResult SearchForm()
+        {
+            return View();
         }
 
         public IActionResult Offer(int auctionId)
