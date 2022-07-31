@@ -15,9 +15,9 @@ namespace AuctionApplication.Controllers
             return View(auction.GetAllAvailableAuctions());
         }
 
-        public IActionResult Offer(int id)
+        public IActionResult Offer(int auctionId)
         {
-            TempData["auctionId"] = id;
+            TempData["auctionId"] = auctionId;
             return RedirectToAction("Index", "Offer");
         }
     }

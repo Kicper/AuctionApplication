@@ -30,7 +30,7 @@
                 @Html.DisplayFor(modelItem => item.Rating)
             </td>
             <td>
-                @Html.ActionLink("Go to the items", "Item", routeValues: new { @id=item.Id }, htmlAttributes: new { })
+                @Html.ActionLink("Go to the items", "Item", routeValues: new { @categoryId=item.Id }, htmlAttributes: new { })
             </td>
         </tr>
         }

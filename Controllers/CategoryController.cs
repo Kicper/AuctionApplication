@@ -17,9 +17,9 @@ namespace AuctionApplication.Controllers
             return View(category.GetAllCategories(userId));
         }
 
-        public IActionResult Item(int id)
+        public IActionResult Item(int categoryId)
         {
-            TempData["categoryId"] = id;
+            TempData["categoryId"] = categoryId;
             return RedirectToAction("Index", "Item");
         }
     }
