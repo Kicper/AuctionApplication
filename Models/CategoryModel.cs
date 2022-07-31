@@ -17,9 +17,10 @@ namespace AuctionApplication.Models
 
     public enum Grade
     {
-        Highest,
-        High,
-        Low,
-        Lowest
+        Highest = 2,
+        High = 1,
+        Medium = 0,
+        Low = -1,
+        Lowest = -2
     }
 }

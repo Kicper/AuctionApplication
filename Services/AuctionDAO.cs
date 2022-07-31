@@ -21,7 +21,8 @@ namespace AuctionApplication.Services
                                     JOIN [Symulator].[dbo].[auction_history] AS [auc] ON [off].[auction_history_id] = [auc].[auction_history_id]
                                     JOIN [Symulator].[dbo].[item] AS [it] ON [it].[item_id] = [auc].[item_id]
                                     WHERE [off].[auction_history_id] NOT IN
-                                    (SELECT DISTINCT [auction_history_id] FROM [Symulator].[dbo].[offer] WHERE [status] = 'finished')";
+                                    (SELECT DISTINCT [auction_history_id] FROM [Symulator].[dbo].[offer] WHERE [status] = 'finished')
+                                    ORDER BY [it].[name] ASC, [off].[auction_history_id] ASC";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

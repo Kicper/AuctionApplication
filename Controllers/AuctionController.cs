@@ -14,5 +14,11 @@ namespace AuctionApplication.Controllers
             AuctionDAO auction = new AuctionDAO();
             return View(auction.GetAllAvailableAuctions());
         }
+
+        public IActionResult Offer(int id)
+        {
+            TempData["auctionId"] = id;
+            return RedirectToAction("Index", "Offer");
+        }
     }
 }
