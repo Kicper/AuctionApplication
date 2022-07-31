@@ -1,4 +1,5 @@
-﻿using AuctionApplication.Services;
+﻿using AuctionApplication.Models;
+using AuctionApplication.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,20 @@ namespace AuctionApplication.Controllers
             TempData.Keep("userId");
             CategoryDAO category = new CategoryDAO();
             return View(category.GetAllCategories(userId));
+        }
+
+        public IActionResult SearchResults(string searchTerm)
+        {
+            int userId = (int)TempData["userId"];
+            TempData.Keep("userId");
+            CategoryDAO category = new CategoryDAO();
+            List<CategoryModel> foundCategories = category.SearchCategories(userId, searchTerm);
+            return View("Index", foundCategories);
+        }
+
+        public IActionResult SearchForm()
+        {
+            return View();
         }
 
         public IActionResult Item(int categoryId)

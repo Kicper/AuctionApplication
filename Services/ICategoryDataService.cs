@@ -10,6 +10,8 @@ namespace AuctionApplication.Services
     {
         List<CategoryModel> GetAllCategories(int userId);
 
+        List<CategoryModel> SearchCategories(int userId, string searchTerm);
+
         CategoryModel GetCategoryById(int id);
 
         int Update(CategoryModel category);

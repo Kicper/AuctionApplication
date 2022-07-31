@@ -1,5 +1,27 @@
 ﻿@model IEnumerable<AuctionApplication.Models.CategoryModel>
 
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Reset searching" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SearchForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Search for a category" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
 <p>List of categories</p>
 
 <table class="table">
