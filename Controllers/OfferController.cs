@@ -17,5 +17,10 @@ namespace AuctionApplication.Controllers
             OfferDAO offer = new OfferDAO();
             return View(offer.GetAllOffersInAuction(auctionId));
         }
+
+        public IActionResult Auction()
+        {
+            return RedirectToAction("Index", "Auction");
+        }
     }
 }

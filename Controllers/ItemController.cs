@@ -31,6 +31,11 @@ namespace AuctionApplication.Controllers
             return View("Index", foundItems);
         }
 
+        public IActionResult Category()
+        {
+            return RedirectToAction("Index", "Category");
+        }
+
         public IActionResult SearchForm()
         {
             return View();
