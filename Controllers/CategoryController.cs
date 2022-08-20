@@ -42,5 +42,13 @@ namespace AuctionApplication.Controllers
             TempData["categoryId"] = categoryId;
             return RedirectToAction("Index", "Item");
         }
+
+        /*public IActionResult IndexSubmit(IEnumerable<CategoryModel> categoryModels)
+        {
+            //List<CategoryModel> submittedCategories = ViewData.{ r => r.Id };
+
+            //var viewmodel = new CategoryModel
+            return RedirectToAction("Index", "Item");
+        }*/
     }
 }

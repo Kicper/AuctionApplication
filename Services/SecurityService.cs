@@ -9,6 +9,7 @@ namespace AuctionApplication.Services
     public class SecurityService
     {
         UserDAO userDAO = new UserDAO();
+        EncryptionService encryption = new EncryptionService();
 
         public SecurityService()
         {
@@ -33,6 +34,11 @@ namespace AuctionApplication.Services
         public int GetId(UserModel user)
         {
             return userDAO.GetUserId(user);
+        }
+
+        public UserModel EncryptPassword(UserModel user)
+        {
+            return encryption.Encrypt(user);
         }
     }
 }

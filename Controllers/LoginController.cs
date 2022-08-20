@@ -19,7 +19,8 @@ namespace AuctionApplication.Controllers
         public IActionResult ProcessLogin(UserModel user)
         {
             SecurityService securityService = new SecurityService();
-
+            //This one must be finished
+            //user = securityService.EncryptPassword(user);
 
             if (securityService.IsValid(user))
             {

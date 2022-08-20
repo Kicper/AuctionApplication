@@ -18,9 +18,10 @@ namespace AuctionApplication.Controllers
         public IActionResult ProcessRegistration(UserModel user)
         {
             SecurityService securityService = new SecurityService();
-            
+            //This one must be finished
+            //user = securityService.EncryptPassword(user);
 
-            if(String.Equals(user.Password, user.RepeatPassword) && !securityService.Exists(user))
+            if (String.Equals(user.Password, user.RepeatPassword) && !securityService.Exists(user))
             {
                 securityService.AddUser(user);
                 TempData["userId"] = securityService.GetId(user);
