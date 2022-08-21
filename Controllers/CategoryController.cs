@@ -10,7 +10,7 @@ namespace AuctionApplication.Controllers
 {
     public class CategoryController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(IEnumerable<CategoryModel> categoryModel)
         {
             int userId = (int)TempData["userId"];
             TempData.Keep("userId");
