@@ -123,9 +123,38 @@ namespace AuctionApplication.Services
             return foundItem;
         }
 
-        public int Update(ItemModel item)
+        public void UpdatePreference(int userId, ItemModel item)
         {
-            throw new NotImplementedException();
+            string sqlStatement = @"IF EXISTS (SELECT * FROM [Symulator].[dbo].[item_preference] WHERE [item_id] LIKE @itemId AND [person_id] LIKE @userId) 
+                                    BEGIN
+                                    UPDATE [Symulator].[dbo].[item_preference]
+	                                SET [rating] = @itemRating, [date_update] = GETDATE()
+	                                WHERE [item_id] LIKE @itemId AND [person_id] LIKE @userId;
+                                    END
+                                    ELSE
+                                    BEGIN
+                                    INSERT INTO [Symulator].[dbo].[item_preference]
+	                                ([rating], [date_add], [item_id], [person_id])
+	                                VALUES (@itemRating, GETDATE(), @itemId, @userId);
+                                    END";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@itemId", item.Id);
+                command.Parameters.AddWithValue("@itemRating", item.Rating);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
     }
 }

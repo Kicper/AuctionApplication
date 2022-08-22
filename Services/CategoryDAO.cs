@@ -120,9 +120,38 @@ namespace AuctionApplication.Services
             return foundCategory;
         }
 
-        public int Update(CategoryModel category)
+        public void UpdatePreference(int userId, CategoryModel category)
         {
-            throw new NotImplementedException();
+            string sqlStatement = @"IF EXISTS (SELECT * FROM [Symulator].[dbo].[category_preference] WHERE [category_id] LIKE @categoryId AND [person_id] LIKE @userId) 
+                                    BEGIN
+                                    UPDATE [Symulator].[dbo].[category_preference]
+	                                SET [rating] = @categoryRating, [date_update] = GETDATE()
+	                                WHERE [category_id] LIKE @categoryId AND [person_id] LIKE @userId;
+                                    END
+                                    ELSE
+                                    BEGIN
+                                    INSERT INTO [Symulator].[dbo].[category_preference]
+	                                ([rating], [date_add], [category_id], [person_id])
+	                                VALUES (@categoryRating, GETDATE(), @categoryId, @userId);
+                                    END";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@categoryId", category.Id);
+                command.Parameters.AddWithValue("@categoryRating", category.Rating);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace AuctionApplication.Controllers
 {
     public class CategoryController : Controller
     {
-        public IActionResult Index(IEnumerable<CategoryModel> categoryModel)
+        public IActionResult Index()
         {
             int userId = (int)TempData["userId"];
             TempData.Keep("userId");
@@ -37,18 +37,28 @@ namespace AuctionApplication.Controllers
             return View();
         }
 
+        public IActionResult Edit(CategoryModel submittedCategory)
+        {
+            CategoryDAO category = new CategoryDAO();
+            int userId = (int)TempData["userId"];
+            TempData.Keep("userId");
+            category.UpdatePreference(userId, submittedCategory);
+            return View("Index", category.GetAllCategories(userId));
+        }
+
+        public IActionResult EditRating(int categoryId, string categoryName, int categoryRating)
+        {
+            CategoryModel category = new CategoryModel();
+            category.Id = categoryId;
+            category.Name = categoryName;
+            category.Rating = categoryRating;
+            return View("Edit", category);
+        }
+
         public IActionResult Item(int categoryId)
         {
             TempData["categoryId"] = categoryId;
             return RedirectToAction("Index", "Item");
         }
-
-        /*public IActionResult IndexSubmit(IEnumerable<CategoryModel> categoryModels)
-        {
-            //List<CategoryModel> submittedCategories = ViewData.{ r => r.Id };
-
-            //var viewmodel = new CategoryModel
-            return RedirectToAction("Index", "Item");
-        }*/
     }
 }

@@ -40,5 +40,26 @@ namespace AuctionApplication.Controllers
         {
             return View();
         }
+
+        public IActionResult Edit(ItemModel submittedItem)
+        {
+            ItemDAO item = new ItemDAO();
+            int userId = (int)TempData["userId"];
+            TempData.Keep("userId");
+            item.UpdatePreference(userId, submittedItem);
+            return View("Index", item.GetAllItemsInCategory(userId, submittedItem.CategoryId));
+        }
+
+        public IActionResult EditRating(int itemId, string itemName, int itemCategory, int itemRating)
+        {
+            ItemModel item = new ItemModel();
+            item.Id = itemId;
+            item.Name = itemName;
+            item.CategoryId = itemCategory;
+            item.Rating = itemRating;
+            return View("Edit", item);
+        }
+
+
     }
 }

@@ -14,6 +14,6 @@ namespace AuctionApplication.Services
 
         CategoryModel GetCategoryById(int id);
 
-        int Update(CategoryModel category);
+        void UpdatePreference(int userId, CategoryModel category);
     }
 }

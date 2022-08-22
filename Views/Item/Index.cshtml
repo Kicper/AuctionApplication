@@ -35,27 +35,28 @@
 
 <p>List of items</p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<form asp-controller="Item" asp-action="Index">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rating)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
@@ -69,8 +70,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Rating)
                 </td>
+                <td>
+                    @Html.ActionLink("Edit rating", "EditRating", routeValues: new { @itemId = item.Id, @itemName = item.Name, @itemCategory = item.CategoryId, @itemRating = item.Rating }, htmlAttributes: new { })
+                </td>
             </tr>
-        }
-        <a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Index">Registration</a>
-    </tbody>
-</table>
+            }
+            <a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Index">Registration</a>
+        </tbody>
+    </table>
+</form>
