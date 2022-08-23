@@ -1,0 +1,77 @@
+﻿<form asp-controller="Algorithm" asp-action="Index">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Criterion Id
+                </th>
+                <th>
+                    Criterion description
+                </th>
+                <th>
+                    Set rating
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    1
+                </td>
+                <td>
+                    Duration of auction
+                </td>
+                <td>
+                    <fieldset>
+                        Change rating <select id="Rating" name="Rating">
+                            <option value="-3">Very low</option>
+                            <option value="-2">Low</option>
+                            <option value="-1">Slightly low</option>
+                            <option selected="selected" value="0">Medium</option>
+                            <option value="1">Slightly high</option>
+                            <option value="2">High</option>
+                            <option value="3">Very high</option>
+                        </select>
+                    </fieldset>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    2
+                </td>
+                <td>
+                    Frequency of the items
+                </td>
+                <td>
+                    <fieldset>
+                        Change rating <select id="Rating" name="Rating">
+                            <option value="-3">Very low</option>
+                            <option value="-2">Low</option>
+                            <option value="-1">Slightly low</option>
+                            <option selected="selected" value="0">Medium</option>
+                            <option value="1">Slightly high</option>
+                            <option value="2">High</option>
+                            <option value="3">Very high</option>
+                        </select>
+                    </fieldset>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <input type="submit" value="Submit changes" />
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Main">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Go back to the main view" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -23,6 +23,11 @@ namespace AuctionApplication.Controllers
             return RedirectToAction("Index", "Auction");
         }
 
+        public IActionResult Algorithm()
+        {
+            return RedirectToAction("Index", "Algorithm");
+        }
+
         public IActionResult Home()
         {
             return RedirectToAction("Index", "Home");
