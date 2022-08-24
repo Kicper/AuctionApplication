@@ -12,9 +12,14 @@ namespace AuctionApplication.Controllers
     {
         public IActionResult Index(AlgorithmModel algorithmModel)
         {
+            int userId = (int)TempData["userId"];
+            TempData.Keep("userId");
             AlgorithmDAO algorithm = new AlgorithmDAO();
             List<(int ItemId, int Frequency)> itemsFrequency = algorithm.ItemsFrequency();
             List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> minMaxPriceAndDate = algorithm.MinMaxPriceAndDate();
+            List<(int ItemId, int Rating)> itemPreferences = algorithm.ItemPreferences(userId);
+            List<(int ItemId, int Rating)> categoryPreferences = algorithm.CategoryPreferences(userId);
+            List<(int ItemId, int AvgPrice, string StartTime, string EndTime)> averagePriceStartEndDate = algorithm.AveragePriceStartEndDate();
             return View();
         }
 
