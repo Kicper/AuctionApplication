@@ -14,12 +14,9 @@ namespace AuctionApplication.Controllers
         {
             int userId = (int)TempData["userId"];
             TempData.Keep("userId");
-            AlgorithmDAO algorithm = new AlgorithmDAO();
-            List<(int ItemId, int Frequency)> itemsFrequency = algorithm.ItemsFrequency();
-            List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> minMaxPriceAndDate = algorithm.MinMaxPriceAndDate();
-            List<(int ItemId, int Rating)> itemPreferences = algorithm.ItemPreferences(userId);
-            List<(int ItemId, int Rating)> categoryPreferences = algorithm.CategoryPreferences(userId);
-            List<(int ItemId, int AvgPrice, string StartTime, string EndTime)> averagePriceStartEndDate = algorithm.AveragePriceStartEndDate();
+            List<(int ItemId, double Result)> finalResult;
+            finalResult = algorithmModel.GetBestAuction(userId);
+            ViewData["result"] = finalResult;
             return View();
         }
 

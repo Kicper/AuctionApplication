@@ -12,13 +12,14 @@ namespace AuctionApplication.Services
                                     Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;
                                     ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public List<(int ItemId, int Frequency)> ItemsFrequency()
+        public List<(int ItemId, int CategoryId, int Frequency)> GetItemsFrequency()
         {
-            List<(int ItemId, int Frequency)> itemsFrequency = new List<(int ItemId, int Frequency)>();
+            List<(int ItemId, int CategoryId, int Frequency)> itemsFrequency = new List<(int ItemId, int CategoryId, int Frequency)>();
 
-            string sqlStatement = @"SELECT [item_id], COUNT([item_id])
-                                    FROM [Symulator].[dbo].[auction_history]
-                                    GROUP BY [item_id] ORDER BY [item_id] ASC";
+            string sqlStatement = @"SELECT [au].[item_id], [it].[category_id], COUNT([au].[item_id])
+                                    FROM [Symulator].[dbo].[auction_history] AS [au] INNER JOIN
+	                                [Symulator].[dbo].[item] AS [it] ON [it].[item_id] = [au].[item_id]
+                                    GROUP BY [au].[item_id], [it].[category_id] ORDER BY [item_id] ASC";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -31,7 +32,7 @@ namespace AuctionApplication.Services
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        itemsFrequency.Add( ((int)reader[0], (int)reader[1]) );
+                        itemsFrequency.Add( ((int)reader[0], (int)reader[1], (int)reader[2]) );
                     }
 
                 }
@@ -43,7 +44,7 @@ namespace AuctionApplication.Services
             return itemsFrequency;
         }
 
-        public List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> MinMaxPriceAndDate()
+        public List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> GetMinMaxPriceAndDate()
         {
             List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> minMaxPriceAndDate = new List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)>();
 
@@ -75,7 +76,7 @@ namespace AuctionApplication.Services
             return minMaxPriceAndDate;
         }
 
-        public List<(int ItemId, int Rating)> ItemPreferences(int userId)
+        public List<(int ItemId, int Rating)> GetItemPreferences(int userId)
         {
             List<(int ItemId, int Rating)> itemPreferences = new List<(int ItemId, int Rating)>();
 
@@ -107,7 +108,7 @@ namespace AuctionApplication.Services
             return itemPreferences;
         }
 
-        public List<(int CategoyId, int Rating)> CategoryPreferences(int userId)
+        public List<(int CategoyId, int Rating)> GetCategoryPreferences(int userId)
         {
             List<(int CategoyId, int Rating)> categoryPreferences = new List<(int CategoyId, int Rating)>();
 
@@ -139,14 +140,15 @@ namespace AuctionApplication.Services
             return categoryPreferences;
         }
 
-        public List<(int ItemId, int AvgPrice, string StartTime, string EndTime)> AveragePriceStartEndDate()
+        public List<(int ItemId, int AvgPrice, int CategoryId, string StartTime, string EndTime)> GetAveragePriceCategoryStartEndDate()
         {
-            List<(int ItemId, int AvgPrice, string StartTime, string EndTime)> averagePriceStartEndDate = new List<(int ItemId, int AvgPrice, string StartTime, string EndTime)>();
+            List<(int ItemId, int AvgPrice, int CategoryId, string StartTime, string EndTime)> averagePriceCategoryStartEndDate = new List<(int ItemId, int AvgPrice, int Category, string StartTime, string EndTime)>();
 
-            string sqlStatement = @"SELECT [au].[item_id], AVG([off].[price]), MIN([off].[date]), MAX([off].[date])
+            string sqlStatement = @"SELECT [au].[item_id], [it].[category_id], AVG([off].[price]), MIN([off].[date]), MAX([off].[date])
                                     FROM [Symulator].[dbo].[offer] AS [off] INNER JOIN
-									[Symulator].[dbo].[auction_history] AS [au] ON [off].[auction_history_id] = [au].[auction_history_id]
-                                    GROUP BY [au].[item_id], [au].[auction_history_id] ORDER BY [au].[item_id] ASC";
+									[Symulator].[dbo].[auction_history] AS [au] ON [off].[auction_history_id] = [au].[auction_history_id] INNER JOIN
+									[Symulator].[dbo].[item] AS [it] ON [it].[item_id] = [au].[item_id]
+                                    GROUP BY [au].[item_id], [au].[auction_history_id], [it].[category_id] ORDER BY [au].[item_id] ASC";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -159,7 +161,7 @@ namespace AuctionApplication.Services
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        averagePriceStartEndDate.Add( ((int)reader[0], (int)reader[1], reader[2].ToString(), reader[3].ToString()) );
+                        averagePriceCategoryStartEndDate.Add( ((int)reader[0], (int)reader[1], (int)reader[2], reader[3].ToString(), reader[4].ToString()) );
                     }
 
                 }
@@ -168,7 +170,7 @@ namespace AuctionApplication.Services
                     Console.WriteLine(e.Message);
                 }
             }
-            return averagePriceStartEndDate;
+            return averagePriceCategoryStartEndDate;
         }
     }
 }

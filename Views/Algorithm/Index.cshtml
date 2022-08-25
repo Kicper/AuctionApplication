@@ -1,4 +1,6 @@
-﻿<form asp-controller="Algorithm" asp-action="Index">
+﻿@model IEnumerable<AuctionApplication.Models.AlgorithmModel>
+
+<form asp-controller="Algorithm" asp-action="Index">
     <table class="table">
         <thead>
             <tr>
@@ -24,14 +26,14 @@
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="DurationOfAuction" name="DurationOfAuction">
-                            <option value="-3">Very low</option>
-                            <option value="-2">Low</option>
-                            <option value="-1">Slightly low</option>
-                            <option selected="selected" value="0">Medium</option>
-                            <option value="1">Slightly high</option>
-                            <option value="2">High</option>
-                            <option value="3">Very high</option>
+                        Change rating <select id="DurationOfAuctionRating" name="DurationOfAuctionRating">
+                            <option value="0.1">Very low</option>
+                            <option value="0.25">Low</option>
+                            <option value="0.5">Slightly low</option>
+                            <option selected="selected" value="1">Medium</option>
+                            <option value="2">Slightly high</option>
+                            <option value="4">High</option>
+                            <option value="10">Very high</option>
                         </select>
                     </fieldset>
                 </td>
@@ -45,14 +47,14 @@
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="FrequencyOfTheItems" name="FrequencyOfTheItems">
-                            <option value="-3">Very low</option>
-                            <option value="-2">Low</option>
-                            <option value="-1">Slightly low</option>
-                            <option selected="selected" value="0">Medium</option>
-                            <option value="1">Slightly high</option>
-                            <option value="2">High</option>
-                            <option value="3">Very high</option>
+                        Change rating <select id="FrequencyOfTheItemsRating" name="FrequencyOfTheItemsRating">
+                            <option value="0.1">Very low</option>
+                            <option value="0.25">Low</option>
+                            <option value="0.5">Slightly low</option>
+                            <option selected="selected" value="1">Medium</option>
+                            <option value="2">Slightly high</option>
+                            <option value="4">High</option>
+                            <option value="10">Very high</option>
                         </select>
                     </fieldset>
                 </td>
@@ -66,14 +68,14 @@
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="AveragePrice" name="AveragePrice">
-                            <option value="-3">Very low</option>
-                            <option value="-2">Low</option>
-                            <option value="-1">Slightly low</option>
-                            <option selected="selected" value="0">Medium</option>
-                            <option value="1">Slightly high</option>
-                            <option value="2">High</option>
-                            <option value="3">Very high</option>
+                        Change rating <select id="AveragePriceRating" name="AveragePriceRating">
+                            <option value="0.1">Very low</option>
+                            <option value="0.25">Low</option>
+                            <option value="0.5">Slightly low</option>
+                            <option selected="selected" value="1">Medium</option>
+                            <option value="2">Slightly high</option>
+                            <option value="4">High</option>
+                            <option value="10">Very high</option>
                         </select>
                     </fieldset>
                 </td>
@@ -87,14 +89,14 @@
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="RatingOfCategories" name="RatingOfCategories">
-                            <option value="-3">Very low</option>
-                            <option value="-2">Low</option>
-                            <option value="-1">Slightly low</option>
-                            <option selected="selected" value="0">Medium</option>
-                            <option value="1">Slightly high</option>
-                            <option value="2">High</option>
-                            <option value="3">Very high</option>
+                        Change rating <select id="RatingOfCategoriesRating" name="RatingOfCategoriesRating">
+                            <option value="0.1">Very low</option>
+                            <option value="0.25">Low</option>
+                            <option value="0.5">Slightly low</option>
+                            <option selected="selected" value="1">Medium</option>
+                            <option value="2">Slightly high</option>
+                            <option value="4">High</option>
+                            <option value="10">Very high</option>
                         </select>
                     </fieldset>
                 </td>
@@ -108,14 +110,14 @@
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="RatingOfItems" name="RatingOfItems">
-                            <option value="-3">Very low</option>
-                            <option value="-2">Low</option>
-                            <option value="-1">Slightly low</option>
-                            <option selected="selected" value="0">Medium</option>
-                            <option value="1">Slightly high</option>
-                            <option value="2">High</option>
-                            <option value="3">Very high</option>
+                        Change rating <select id="RatingOfItemsRating" name="RatingOfItemsRating">
+                            <option value="0.1">Very low</option>
+                            <option value="0.25">Low</option>
+                            <option value="0.5">Slightly low</option>
+                            <option selected="selected" value="1">Medium</option>
+                            <option value="2">Slightly high</option>
+                            <option value="4">High</option>
+                            <option value="10">Very high</option>
                         </select>
                     </fieldset>
                 </td>
@@ -138,3 +140,31 @@
         </form>
     </div>
 </div>
+
+<p>List of items ordered in the best way according to uesr preferences:</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Item
+            </th>
+            <th>
+                Result
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var pref in (List<(int ItemId, double Result)>)ViewData["result"])
+    {
+        <tr>
+            <td>
+                @pref.ItemId
+            </td>
+            <td>
+                @pref.Result
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

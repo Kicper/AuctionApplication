@@ -7,14 +7,14 @@ namespace AuctionApplication.Services
 {
     interface IAlgorithmDataService
     {
-        List<(int ItemId, int Frequency)> ItemsFrequency();
+        List<(int ItemId, int CategoryId, int Frequency)> GetItemsFrequency();
 
-        List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> MinMaxPriceAndDate();
+        List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> GetMinMaxPriceAndDate();
 
-        List<(int ItemId, int Rating)> ItemPreferences(int userId);
+        List<(int ItemId, int Rating)> GetItemPreferences(int userId);
 
-        List<(int CategoyId, int Rating)> CategoryPreferences(int userId);
+        List<(int CategoyId, int Rating)> GetCategoryPreferences(int userId);
 
-        List<(int ItemId, int AvgPrice, string StartTime, string EndTime)> AveragePriceStartEndDate();
+        List<(int ItemId, int AvgPrice, int CategoryId, string StartTime, string EndTime)> GetAveragePriceCategoryStartEndDate();
     }
 }
