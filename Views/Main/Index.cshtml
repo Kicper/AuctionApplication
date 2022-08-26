@@ -9,35 +9,35 @@
         <form asp-action="Category">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="submit" value="Rate categories and items" class="btn btn-primary" />
+                <input type="submit" value="Rate categories and items" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-top:10px">
     <div class="col-md-4">
         <form asp-action="Auction">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="submit" value="Show available auctions" class="btn btn-primary" />
+                <input type="submit" value="Show available auctions" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-top:10px">
     <div class="col-md-4">
         <form asp-action="Algorithm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="submit" value="Get best auction preferetion" class="btn btn-primary" />
+                <input type="submit" value="Get best auction preferetion" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-top:80px">
     <div class="col-md-4">
         <form asp-action="Home">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -46,10 +46,6 @@
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-controller="Home" asp-action="Index">Back to main view</a>
 </div>
 
 @section Scripts {

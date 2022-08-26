@@ -1,6 +1,76 @@
 ﻿@model IEnumerable<AuctionApplication.Models.CategoryModel>
 
+
+<h4>List of categories</h4>
+<hr />
+
 <div class="row">
+    <div class="col-md-4">
+        <form asp-action="SearchForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Search for a category" class="btn btn-secondary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row" style="margin-top:10px">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Reset searching" class="btn btn-secondary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<form asp-controller="Category" asp-action="Index">
+    <table class="table" style="margin-top:20px">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rating)
+                </th>
+                <th>
+                    Current rating
+                </th>
+                <th>
+                    Go to the items in category
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit rating", "EditRating", routeValues: new { @categoryId = item.Id, @categoryName = item.Name, @categoryRating = item.Rating }, htmlAttributes: new { })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Go to the items", "Item", routeValues: new { @categoryId = item.Id }, htmlAttributes: new { })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @*<div class="form-group">
+            <input type="submit" value="Submit rating changes" class="btn btn-primary" />
+        </div>*@
+</form>
+
+<div class="row" style="margin-top:30px">
     <div class="col-md-4">
         <form asp-action="Main">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -10,84 +80,3 @@
         </form>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Reset searching" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SearchForm">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Search for a category" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<p>List of categories</p>
-
-<form asp-controller="Category" asp-action="Index">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Rating)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                @*<td>
-                    @Html.DropDownListFor(modelItem => item.Rating, new List<SelectListItem>
-                    {
-                        new SelectListItem{Text="Very low", Value="-3"},
-                        new SelectListItem{Text="Low", Value="-2"},
-                        new SelectListItem{Text="Slightly low", Value="-1"},
-                        new SelectListItem{Text="Medium", Value="0"},
-                        new SelectListItem{Text="Slightly high", Value="1"},
-                        new SelectListItem{Text="High", Value="2"},
-                        new SelectListItem{Text="Very high", Value="3"}
-                    }, "Select One", new { @class = "form-control" })
-                </td>*@
-                <td>
-                    @Html.ActionLink("Edit rating", "EditRating", routeValues: new { @categoryId = item.Id, @categoryName = item.Name, @categoryRating = item.Rating }, htmlAttributes: new { })
-                </td>
-                <td>
-                    @Html.ActionLink("Go to the items", "Item", routeValues: new { @categoryId = item.Id }, htmlAttributes: new { })
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-
-    @*<div class="form-group">
-        <input type="submit" value="Submit rating changes" class="btn btn-primary" />
-    </div>*@
-</form>
