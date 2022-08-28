@@ -25,6 +25,67 @@ namespace AuctionApplication.Models
 
         public double RatingOfItemsRating { get; set; }
 
+
+        public (double averagePriceScale, double frequencyScale, double itemRatingScale, double categoryRatingScale) Scalarization(int userId)
+        {
+            AlgorithmDAO algorithm = new AlgorithmDAO();
+            List<(int ItemId, string ItemName, int CategoryId, int Frequency)> itemsFrequency = algorithm.GetItemsFrequency();
+            List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> minMaxPriceAndDate = algorithm.GetMinMaxPriceAndDate();
+            List<(int ItemId, int Rating)> itemPreferences = algorithm.GetItemPreferences(userId);
+            List<(int ItemId, int Rating)> categoryPreferences = algorithm.GetCategoryPreferences(userId);
+            List<(int ItemId, int CategoryId, int AvgPrice, string StartTime, string EndTime)> averagePriceCategoryStartEndDate = algorithm.GetAveragePriceCategoryStartEndDate();
+
+            
+            double averagePriceScale;
+            double frequencyScale;
+            double itemRatingScale;
+            double categoryRatingScale;
+
+
+            /* COUNT AVERAGE PRICE */
+            int i;
+            int counter = 0;
+            double sum = 0;
+            double averagePrice;
+            for (i = 0; i < averagePriceCategoryStartEndDate.Count; ++i)
+            {
+                sum += averagePriceCategoryStartEndDate[i].AvgPrice;
+                counter++;
+            }
+            averagePrice = sum / counter;
+
+
+            /* COUNT FREQUENCY COEFFICIENT */
+            double frequency = 1;
+
+
+            /* COUNT ITEM RATING */
+            sum = 0;
+            counter = 0;
+            double itemRating = 0;
+            for (i = 0; i < itemPreferences.Count; ++i)
+            {
+                sum += itemPreferences[i].Rating;
+                counter++;
+            }
+            itemRating = (sum / counter) + 3;
+
+
+            /* COUNT CATEGORY RATING */
+            sum = 0;
+            counter = 0;
+            double categoryRating = 0;
+            for (i = 0; i < categoryPreferences.Count; ++i)
+            {
+                sum += categoryPreferences[i].Rating;
+                counter++;
+            }
+            categoryRating = (sum / counter) + 3;
+
+
+            return (3, 4, 6, 7);
+        }
+
         public List<(int ItemId, string ItemName, double Result)> GetBestAuction(int userId)
         {
             AlgorithmDAO algorithm = new AlgorithmDAO();
@@ -34,35 +95,30 @@ namespace AuctionApplication.Models
             List<(int ItemId, int Rating)> categoryPreferences = algorithm.GetCategoryPreferences(userId);
             List<(int ItemId, int CategoryId, int AvgPrice, string StartTime, string EndTime)> averagePriceCategoryStartEndDate = algorithm.GetAveragePriceCategoryStartEndDate();
 
-
-            double sum;
-            //TimeSpan dateDifference;
             int i;
-            double averagePrice;
             int counter;
+            double sum;
             List<(int ItemId, string ItemName, double Result)> finalResult = new List<(int ItemId, string ItemName, double Result)>();
-            double result;
+            double averagePrice;
             double frequency;
             double itemRating;
             double categoryRating;
+            double result;
 
             foreach (var item in itemsFrequency)
             {
-                /* COUNT AVERAGE PRICE AND AVERAGE DATE */
+                /* COUNT AVERAGE PRICE */
                 sum = 0;
                 counter = 0;
                 result = 0;
-                //dateDifference = TimeSpan.Zero;
                 for (i = 0; i < averagePriceCategoryStartEndDate.Count; ++i)
                 {
                     if(averagePriceCategoryStartEndDate[i].ItemId == item.ItemId)
                     {
                         sum += averagePriceCategoryStartEndDate[i].AvgPrice;
-                        //dateDifference += Convert.ToDateTime(averagePriceCategoryStartEndDate[i].EndTime).Subtract(Convert.ToDateTime(averagePriceCategoryStartEndDate[i].StartTime));
                         counter++;
                     }
                 }
-                //averageDateDifference = dateDifference / counter;
                 averagePrice = sum / counter;
                 result = averagePrice * AveragePriceRating;
 
