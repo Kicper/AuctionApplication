@@ -41,7 +41,7 @@ namespace AuctionApplication.Services
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        allItems.Add(new ItemModel { Id = (int)reader[0], Name = (string)reader[1], CategoryId = (int)reader[2], Rating = (int)reader[3] });
+                        allItems.Add(new ItemModel { Id = (int)reader[0], Name = (string)reader[1], CategoryId = (int)reader[2], Rating = (int)reader[3], RatingText = (ItemModel.Grade)(int)reader[3] });
                     }
 
                 }

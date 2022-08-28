@@ -1,32 +1,29 @@
 ﻿@model IEnumerable<AuctionApplication.Models.AlgorithmModel>
 
+
+<h4>List of criterions</h4>
+<hr />
+
 <form asp-controller="Algorithm" asp-action="Index">
     <table class="table">
         <thead>
             <tr>
-                <th>
-                    Criterion Id
-                </th>
                 <th>
                     Criterion description
                 </th>
                 <th>
                     Set rating
                 </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    1
-                </td>
-                <td>
                     Duration of auction
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="DurationOfAuctionRating" name="DurationOfAuctionRating">
+                        Change rating: <select id="DurationOfAuctionRating" name="DurationOfAuctionRating">
                             <option value="0.1">Very low</option>
                             <option value="0.25">Low</option>
                             <option value="0.5">Slightly low</option>
@@ -39,15 +36,12 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    2
-                </td>
                 <td>
                     Frequency of the items
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="FrequencyOfTheItemsRating" name="FrequencyOfTheItemsRating">
+                        Change rating: <select id="FrequencyOfTheItemsRating" name="FrequencyOfTheItemsRating">
                             <option value="0.1">Very low</option>
                             <option value="0.25">Low</option>
                             <option value="0.5">Slightly low</option>
@@ -60,15 +54,12 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    3
-                </td>
                 <td>
                     Average price
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="AveragePriceRating" name="AveragePriceRating">
+                        Change rating: <select id="AveragePriceRating" name="AveragePriceRating">
                             <option value="0.1">Very low</option>
                             <option value="0.25">Low</option>
                             <option value="0.5">Slightly low</option>
@@ -81,15 +72,12 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    4
-                </td>
                 <td>
                     Rating of categories
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="RatingOfCategoriesRating" name="RatingOfCategoriesRating">
+                        Change rating: <select id="RatingOfCategoriesRating" name="RatingOfCategoriesRating">
                             <option value="0.1">Very low</option>
                             <option value="0.25">Low</option>
                             <option value="0.5">Slightly low</option>
@@ -103,14 +91,11 @@
             </tr>
             <tr>
                 <td>
-                    5
-                </td>
-                <td>
                     Rating of items
                 </td>
                 <td>
                     <fieldset>
-                        Change rating <select id="RatingOfItemsRating" name="RatingOfItemsRating">
+                        Change rating: <select id="RatingOfItemsRating" name="RatingOfItemsRating">
                             <option value="0.1">Very low</option>
                             <option value="0.25">Low</option>
                             <option value="0.5">Slightly low</option>
@@ -124,25 +109,14 @@
             </tr>
         </tbody>
     </table>
-
-    <div>
-        <input type="submit" value="Submit changes" />
+    <div class="form-group" style="margin-top:30px">
+        <input type="submit" value="Reset searching" class="btn btn-secondary" />
     </div>
 </form>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Main">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Go back to the main view" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<hr/>
 
-<p>List of items ordered in the best way according to uesr preferences:</p>
-
+<h6 style="margin-top:30px">List of items ordered in the best way according to user preferences:</h6>
 <table class="table">
     <thead>
         <tr>
@@ -155,16 +129,27 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var pref in (List<(int ItemId, double Result)>)ViewData["result"])
-    {
-        <tr>
-            <td>
-                @pref.ItemId
-            </td>
-            <td>
-                @pref.Result
-            </td>
-        </tr>
-    }
+        @foreach (var pref in (List<(int ItemId, string ItemName, double Result)>)ViewData["result"])
+        {
+            <tr>
+                <td>
+                    @pref.ItemName
+                </td>
+                <td>
+                    @pref.Result
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div class="row" style="margin-top:30px">
+    <div class="col-md-4">
+        <form asp-action="Main">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Go back to the main view" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

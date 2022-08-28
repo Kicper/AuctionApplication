@@ -1,56 +1,43 @@
 ﻿@model IEnumerable<AuctionApplication.Models.ItemModel>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Main">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Go back to the main view" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Reset searching" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<h4>List of auctions</h4>
+<hr />
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="SearchForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="submit" value="Search for an auction" class="btn btn-primary" />
+                <input type="submit" value="Search for an auction" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
 
-<p>List of auctions</p>
+<div class="row" style="margin-top:10px">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Reset searching" class="btn btn-secondary" />
+            </div>
+        </form>
+    </div>
+</div>
 
-<table class="table">
+<table class="table" style="margin-top:20px">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Item
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Auction Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
+                Go to the auction details
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AuctionId)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -58,13 +45,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.AuctionId)
@@ -76,3 +57,14 @@
         }
     </tbody>
 </table>
+
+<div class="row"  style="margin-top:30px">
+    <div class="col-md-4">
+        <form asp-action="Main">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Go back to the main view" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

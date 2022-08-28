@@ -13,7 +13,6 @@ namespace AuctionApplication.Models
             this.AveragePriceRating = 1;
             this.RatingOfCategoriesRating = 1;
             this.RatingOfItemsRating = 1;
-            //this.FinalResult = new List<(int ItemId, double Result)>();
         }
 
         public double DurationOfAuctionRating { get; set; }
@@ -26,12 +25,10 @@ namespace AuctionApplication.Models
 
         public double RatingOfItemsRating { get; set; }
 
-        //public List<(int ItemId, double Result)> FinalResult { get; set; }
-
-        public List<(int ItemId, double Result)> GetBestAuction(int userId)
+        public List<(int ItemId, string ItemName, double Result)> GetBestAuction(int userId)
         {
             AlgorithmDAO algorithm = new AlgorithmDAO();
-            List<(int ItemId, int CategoryId, int Frequency)> itemsFrequency = algorithm.GetItemsFrequency();
+            List<(int ItemId, string ItemName, int CategoryId, int Frequency)> itemsFrequency = algorithm.GetItemsFrequency();
             List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> minMaxPriceAndDate = algorithm.GetMinMaxPriceAndDate();
             List<(int ItemId, int Rating)> itemPreferences = algorithm.GetItemPreferences(userId);
             List<(int ItemId, int Rating)> categoryPreferences = algorithm.GetCategoryPreferences(userId);
@@ -43,7 +40,7 @@ namespace AuctionApplication.Models
             int i;
             double averagePrice;
             int counter;
-            List<(int ItemId, double Result)> finalResult = new List<(int ItemId, double Result)>();
+            List<(int ItemId, string ItemName, double Result)> finalResult = new List<(int ItemId, string ItemName, double Result)>();
             double result;
             double frequency;
             double itemRating;
@@ -106,7 +103,7 @@ namespace AuctionApplication.Models
                 }
                 result += categoryRating * RatingOfCategoriesRating;
 
-                finalResult.Add( (item.ItemId, result) );
+                finalResult.Add( (item.ItemId, item.ItemName, result) );
                 //FinalResult.Add( (item.ItemId, result) );
             }
 

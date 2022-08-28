@@ -18,6 +18,14 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Index">Back to login page</a>
+
+<div class="row" style="margin-top:30px">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Go back to the login page" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 </div>

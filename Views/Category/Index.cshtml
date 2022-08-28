@@ -37,7 +37,7 @@
                     @Html.DisplayNameFor(model => model.Rating)
                 </th>
                 <th>
-                    Current rating
+                    Change rating
                 </th>
                 <th>
                     Go to the items in category
@@ -52,7 +52,7 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Rating)
+                        @Html.DisplayFor(modelItem => item.RatingText)
                     </td>
                     <td>
                         @Html.ActionLink("Edit rating", "EditRating", routeValues: new { @categoryId = item.Id, @categoryName = item.Name, @categoryRating = item.Rating }, htmlAttributes: new { })
@@ -64,10 +64,6 @@
             }
         </tbody>
     </table>
-
-    @*<div class="form-group">
-            <input type="submit" value="Submit rating changes" class="btn btn-primary" />
-        </div>*@
 </form>
 
 <div class="row" style="margin-top:30px">

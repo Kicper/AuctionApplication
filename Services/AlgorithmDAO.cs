@@ -12,14 +12,14 @@ namespace AuctionApplication.Services
                                     Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;
                                     ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public List<(int ItemId, int CategoryId, int Frequency)> GetItemsFrequency()
+        public List<(int ItemId, string ItemName, int CategoryId, int Frequency)> GetItemsFrequency()
         {
-            List<(int ItemId, int CategoryId, int Frequency)> itemsFrequency = new List<(int ItemId, int CategoryId, int Frequency)>();
+            List<(int ItemId, string ItemName, int CategoryId, int Frequency)> itemsFrequency = new List<(int ItemId, string ItemName, int CategoryId, int Frequency)>();
 
-            string sqlStatement = @"SELECT [au].[item_id], [it].[category_id], COUNT([au].[item_id])
+            string sqlStatement = @"SELECT [au].[item_id], [it].[name], [it].[category_id], COUNT([au].[item_id])
                                     FROM [Symulator].[dbo].[auction_history] AS [au] INNER JOIN
 	                                [Symulator].[dbo].[item] AS [it] ON [it].[item_id] = [au].[item_id]
-                                    GROUP BY [au].[item_id], [it].[category_id] ORDER BY [item_id] ASC";
+                                    GROUP BY [au].[item_id], [it].[category_id], [it].[name] ORDER BY [item_id] ASC";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -32,7 +32,7 @@ namespace AuctionApplication.Services
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        itemsFrequency.Add( ((int)reader[0], (int)reader[1], (int)reader[2]) );
+                        itemsFrequency.Add( ((int)reader[0], reader[1].ToString(), (int)reader[2], (int)reader[3]) );
                     }
 
                 }

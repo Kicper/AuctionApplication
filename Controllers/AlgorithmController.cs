@@ -14,7 +14,7 @@ namespace AuctionApplication.Controllers
         {
             int userId = (int)TempData["userId"];
             TempData.Keep("userId");
-            List<(int ItemId, double Result)> finalResult;
+            List<(int ItemId, string ItemName, double Result)> finalResult;
             finalResult = algorithmModel.GetBestAuction(userId);
             ViewData["result"] = finalResult;
             return View();
