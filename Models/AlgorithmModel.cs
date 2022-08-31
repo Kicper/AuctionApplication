@@ -1,6 +1,7 @@
 ﻿using AuctionApplication.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AuctionApplication.Models
 {
@@ -35,12 +36,6 @@ namespace AuctionApplication.Models
             List<(int ItemId, int Rating)> categoryPreferences = algorithm.GetCategoryPreferences(userId);
             List<(int ItemId, int CategoryId, int AvgPrice, string StartTime, string EndTime)> averagePriceCategoryStartEndDate = algorithm.GetAveragePriceCategoryStartEndDate();
 
-            
-            double averagePriceScale;
-            double frequencyScale;
-            double itemRatingScale;
-            double categoryRatingScale;
-
 
             /* COUNT AVERAGE PRICE */
             int i;
@@ -53,10 +48,11 @@ namespace AuctionApplication.Models
                 counter++;
             }
             averagePrice = sum / counter;
+            double averagePriceScale = 10 / averagePrice;
 
 
             /* COUNT FREQUENCY COEFFICIENT */
-            double frequency = 1;
+            double frequencyScale = 20;
 
 
             /* COUNT ITEM RATING */
@@ -65,10 +61,11 @@ namespace AuctionApplication.Models
             double itemRating = 0;
             for (i = 0; i < itemPreferences.Count; ++i)
             {
-                sum += itemPreferences[i].Rating;
+                sum += Math.Abs(itemPreferences[i].Rating);
                 counter++;
             }
-            itemRating = (sum / counter) + 3;
+            itemRating = (sum / counter);
+            double itemRatingScale = 10 / itemRating;
 
 
             /* COUNT CATEGORY RATING */
@@ -77,13 +74,13 @@ namespace AuctionApplication.Models
             double categoryRating = 0;
             for (i = 0; i < categoryPreferences.Count; ++i)
             {
-                sum += categoryPreferences[i].Rating;
+                sum += Math.Abs(categoryPreferences[i].Rating);
                 counter++;
             }
-            categoryRating = (sum / counter) + 3;
+            categoryRating = (sum / counter);
+            double categoryRatingScale = 10 / categoryRating;
 
-
-            return (3, 4, 6, 7);
+            return (averagePriceScale, frequencyScale, itemRatingScale, categoryRatingScale);
         }
 
         public List<(int ItemId, string ItemName, double Result)> GetBestAuction(int userId)
@@ -95,6 +92,7 @@ namespace AuctionApplication.Models
             List<(int ItemId, int Rating)> categoryPreferences = algorithm.GetCategoryPreferences(userId);
             List<(int ItemId, int CategoryId, int AvgPrice, string StartTime, string EndTime)> averagePriceCategoryStartEndDate = algorithm.GetAveragePriceCategoryStartEndDate();
 
+
             int i;
             int counter;
             double sum;
@@ -104,6 +102,8 @@ namespace AuctionApplication.Models
             double itemRating;
             double categoryRating;
             double result;
+            double averagePriceScale, frequencyScale, itemRatingScale, categoryRatingScale;
+            (averagePriceScale, frequencyScale, itemRatingScale, categoryRatingScale) = Scalarization(userId);
 
             foreach (var item in itemsFrequency)
             {
@@ -120,7 +120,7 @@ namespace AuctionApplication.Models
                     }
                 }
                 averagePrice = sum / counter;
-                result = averagePrice * AveragePriceRating;
+                result = averagePrice * AveragePriceRating * averagePriceScale;
 
 
                 /* COUNT FREQUENCY COEFFICIENT */
@@ -131,7 +131,7 @@ namespace AuctionApplication.Models
                     sum += itemsFrequency[i].Frequency;
                 }
                 frequency = item.Frequency / sum;
-                result += frequency * FrequencyOfTheItemsRating;
+                result += frequency * FrequencyOfTheItemsRating * frequencyScale;
 
 
                 /* COUNT ITEM RATING */
@@ -144,7 +144,7 @@ namespace AuctionApplication.Models
                         break;
                     }
                 }
-                result += itemRating * RatingOfItemsRating;
+                result += itemRating * RatingOfItemsRating * itemRatingScale;
 
 
                 /* COUNT CATEGORY RATING */
@@ -157,12 +157,13 @@ namespace AuctionApplication.Models
                         break;
                     }
                 }
-                result += categoryRating * RatingOfCategoriesRating;
+                result += categoryRating * RatingOfCategoriesRating * categoryRatingScale;
 
                 finalResult.Add( (item.ItemId, item.ItemName, result) );
-                //FinalResult.Add( (item.ItemId, result) );
+
             }
 
+            finalResult = finalResult.OrderByDescending(x => x.Result).ToList();
             return finalResult;
         }
     }

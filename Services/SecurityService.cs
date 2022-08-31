@@ -36,9 +36,9 @@ namespace AuctionApplication.Services
             return userDAO.GetUserId(user);
         }
 
-        public UserModel EncryptPassword(UserModel user)
+        public string EncryptPassword(string password)
         {
-            return encryption.Encrypt(user);
+            return encryption.Encrypt(password);
         }
     }
 }
