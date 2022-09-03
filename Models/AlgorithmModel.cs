@@ -26,11 +26,9 @@ namespace AuctionApplication.Models
 
         public double RatingOfItemsRating { get; set; }
 
-
-        public (double averagePriceScale, double frequencyScale, double itemRatingScale, double categoryRatingScale) Scalarization(int userId)
+        public (double averagePriceScale, double averageDurationScale, double frequencyScale, double itemRatingScale, double categoryRatingScale) Scalarization(int userId)
         {
             AlgorithmDAO algorithm = new AlgorithmDAO();
-            List<(int ItemId, string ItemName, int CategoryId, int Frequency)> itemsFrequency = algorithm.GetItemsFrequency();
             List<(int ItemId, int MinPrice, int MaxPrice, string MinTime, string MaxTime)> minMaxPriceAndDate = algorithm.GetMinMaxPriceAndDate();
             List<(int ItemId, int Rating)> itemPreferences = algorithm.GetItemPreferences(userId);
             List<(int ItemId, int Rating)> categoryPreferences = algorithm.GetCategoryPreferences(userId);
@@ -41,14 +39,30 @@ namespace AuctionApplication.Models
             int i;
             int counter = 0;
             double sum = 0;
-            double averagePrice;
             for (i = 0; i < averagePriceCategoryStartEndDate.Count; ++i)
             {
                 sum += averagePriceCategoryStartEndDate[i].AvgPrice;
                 counter++;
             }
-            averagePrice = sum / counter;
+            double averagePrice = sum / counter;
             double averagePriceScale = 10 / averagePrice;
+
+
+            /* COUNT AVERAGE DURATION */
+            counter = 0;
+            int sumDate = 0;
+            DateTime startTime, endTime;
+            TimeSpan dateDifference;
+            for (i = 0; i < averagePriceCategoryStartEndDate.Count; ++i)
+            {
+                startTime = Convert.ToDateTime(averagePriceCategoryStartEndDate[i].StartTime);
+                endTime = Convert.ToDateTime(averagePriceCategoryStartEndDate[i].EndTime);
+                dateDifference = endTime.Subtract(startTime);
+                sumDate += (int)dateDifference.TotalMinutes;
+                counter++;
+            }
+            double averageDuration = sumDate / counter;
+            double averageDurationScale = 10 / averageDuration;
 
 
             /* COUNT FREQUENCY COEFFICIENT */
@@ -58,29 +72,27 @@ namespace AuctionApplication.Models
             /* COUNT ITEM RATING */
             sum = 0;
             counter = 0;
-            double itemRating = 0;
             for (i = 0; i < itemPreferences.Count; ++i)
             {
                 sum += Math.Abs(itemPreferences[i].Rating);
                 counter++;
             }
-            itemRating = (sum / counter);
+            double itemRating = (sum / counter);
             double itemRatingScale = 10 / itemRating;
 
 
             /* COUNT CATEGORY RATING */
             sum = 0;
             counter = 0;
-            double categoryRating = 0;
             for (i = 0; i < categoryPreferences.Count; ++i)
             {
                 sum += Math.Abs(categoryPreferences[i].Rating);
                 counter++;
             }
-            categoryRating = (sum / counter);
+            double categoryRating = (sum / counter);
             double categoryRatingScale = 10 / categoryRating;
 
-            return (averagePriceScale, frequencyScale, itemRatingScale, categoryRatingScale);
+            return (averagePriceScale, averageDurationScale, frequencyScale, itemRatingScale, categoryRatingScale);
         }
 
         public List<(int ItemId, string ItemName, double Result)> GetBestAuction(int userId)
@@ -96,14 +108,14 @@ namespace AuctionApplication.Models
             int i;
             int counter;
             double sum;
+            int sumDate;
+            DateTime startTime, endTime;
+            TimeSpan dateDifference;
             List<(int ItemId, string ItemName, double Result)> finalResult = new List<(int ItemId, string ItemName, double Result)>();
-            double averagePrice;
-            double frequency;
-            double itemRating;
-            double categoryRating;
+            double averagePrice, averageDuration, frequency, itemRating, categoryRating;
+            double averagePriceScale, averageDurationScale, frequencyScale, itemRatingScale, categoryRatingScale;
             double result;
-            double averagePriceScale, frequencyScale, itemRatingScale, categoryRatingScale;
-            (averagePriceScale, frequencyScale, itemRatingScale, categoryRatingScale) = Scalarization(userId);
+            (averagePriceScale, averageDurationScale, frequencyScale, itemRatingScale, categoryRatingScale) = Scalarization(userId);
 
             foreach (var item in itemsFrequency)
             {
@@ -121,6 +133,24 @@ namespace AuctionApplication.Models
                 }
                 averagePrice = sum / counter;
                 result = averagePrice * AveragePriceRating * averagePriceScale;
+
+
+                /* COUNT AVERAGE DURATION */
+                counter = 0;
+                sumDate = 0;
+                for (i = 0; i < averagePriceCategoryStartEndDate.Count; ++i)
+                {
+                    if (averagePriceCategoryStartEndDate[i].ItemId == item.ItemId)
+                    {
+                        startTime = Convert.ToDateTime(averagePriceCategoryStartEndDate[i].StartTime);
+                        endTime = Convert.ToDateTime(averagePriceCategoryStartEndDate[i].EndTime);
+                        dateDifference = endTime.Subtract(startTime);
+                        sumDate += (int)dateDifference.TotalMinutes;
+                        counter++;
+                    }
+                }
+                averageDuration = sumDate / counter;
+                result += averageDuration * DurationOfAuctionRating * averageDurationScale;
 
 
                 /* COUNT FREQUENCY COEFFICIENT */
