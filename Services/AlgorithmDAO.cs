@@ -144,7 +144,7 @@ namespace AuctionApplication.Services
         {
             List<(int ItemId, int AvgPrice, int CategoryId, string StartTime, string EndTime)> averagePriceCategoryStartEndDate = new List<(int ItemId, int AvgPrice, int Category, string StartTime, string EndTime)>();
 
-            string sqlStatement = @"SELECT [au].[item_id], [it].[category_id], AVG([off].[price]), MIN([off].[date]), MAX([off].[date])
+            string sqlStatement = @"SELECT [au].[item_id], [it].[category_id], MAX([off].[price]), MIN([off].[date]), MAX([off].[date])
                                     FROM [Symulator].[dbo].[offer] AS [off] INNER JOIN
 									[Symulator].[dbo].[auction_history] AS [au] ON [off].[auction_history_id] = [au].[auction_history_id] INNER JOIN
 									[Symulator].[dbo].[item] AS [it] ON [it].[item_id] = [au].[item_id]
